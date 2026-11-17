@@ -3,7 +3,6 @@ package com.chanale.chinesewidget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -45,8 +44,8 @@ class ChineseWidgetProvider : AppWidgetProvider() {
             var exampleEn = "As long as you persist, you will definitely succeed."
 
             // Tap action: Open translation / dictionary
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://translate.google.com/?sl=zh-CN&tl=en&text=$hanzi&op=translate")
+            val initialUri = Uri.parse("https://translate.google.com/?sl=zh-CN&tl=en&text=$hanzi&op=translate")
+            val intent = Intent(Intent.ACTION_VIEW, initialUri).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
             val pendingIntent = PendingIntent.getActivity(
@@ -69,14 +68,14 @@ class ChineseWidgetProvider : AppWidgetProvider() {
                 override fun onResponse(call: Call, response: Response) {
                     response.body?.string()?.let { jsonStr ->
                         try {
-                            val data = Gson().fromJson(jsonStr, JsonObject::class.java)
-                            if (data.has("hanzi")) {
-                                hanzi = data.get("hanzi").asString
-                                pinyin = data.get("pinyin").asString
-                                english = data.get("english").asString
-                                if (data.has("hsk_level")) hsk = data.get("hsk_level").asString
-                                if (data.has("example_cn")) exampleCn = data.get("example_cn").asString
-                                if (data.has("example_en")) exampleEn = data.get("example_en").asString
+                            val jsonObject = Gson().fromJson(jsonStr, JsonObject::class.java)
+                            if (jsonObject.has("hanzi")) {
+                                hanzi = jsonObject.get("hanzi").asString
+                                pinyin = jsonObject.get("pinyin").asString
+                                english = jsonObject.get("english").asString
+                                if (jsonObject.has("hsk_level")) hsk = jsonObject.get("hsk_level").asString
+                                if (jsonObject.has("example_cn")) exampleCn = jsonObject.get("example_cn").asString
+                                if (jsonObject.has("example_en")) exampleEn = jsonObject.get("example_en").asString
 
                                 views.setTextViewText(R.id.tv_hanzi, hanzi)
                                 views.setTextViewText(R.id.tv_pinyin, pinyin)
@@ -85,8 +84,8 @@ class ChineseWidgetProvider : AppWidgetProvider() {
                                 views.setTextViewText(R.id.tv_example_cn, exampleCn)
                                 views.setTextViewText(R.id.tv_example_en, exampleEn)
 
-                                val tapIntent = Intent(Intent.ACTION_VIEW).apply {
-                                    data = Uri.parse("https://translate.google.com/?sl=zh-CN&tl=en&text=$hanzi&op=translate")
+                                val updatedUri = Uri.parse("https://translate.google.com/?sl=zh-CN&tl=en&text=$hanzi&op=translate")
+                                val tapIntent = Intent(Intent.ACTION_VIEW, updatedUri).apply {
                                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                 }
                                 val tapPending = PendingIntent.getActivity(
