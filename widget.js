@@ -9,15 +9,15 @@
  * Features:
  * - Displays daily Hanzi, Pinyin with tone marks, English definition, and example sentence.
  * - Supports Small, Medium, and Large iOS home screen widgets.
- * - Automatic midnight refresh.
+ * - Automatic dynamic daily rotation (synchronizes automatically by day of year).
  * - Offline cache support: Works even without internet.
- * - Tap to inspect: Tapping the widget opens detailed dictionary lookup (Pleco / Google Translate).
+ * - Tap to inspect: Tapping the widget opens detailed translation/dictionary.
  */
 
 const CONFIG = {
-  // Remote JSON URL for today's word
-  TODAY_URL: "https://raw.githubusercontent.com/chanAle-lab/widgetN1Chinese/main/today.json",
+  // Remote URLs
   ALL_WORDS_URL: "https://raw.githubusercontent.com/chanAle-lab/widgetN1Chinese/main/words.json",
+  TODAY_URL: "https://raw.githubusercontent.com/chanAle-lab/widgetN1Chinese/main/today.json",
   
   // Theme colors
   BG_START: "#7A1C1C",     // Deep Imperial Crimson
@@ -44,30 +44,51 @@ const OFFLINE_FALLBACK = {
 };
 
 /**
- * Fetch word data with multi-layer fallback:
- * 1. Try remote today.json
- * 2. Try remote words.json (computed by day of year)
- * 3. Try local cache
- * 4. Fallback to built-in word
+ * Fetch word data:
+ * 1. Calculate day of year (1..365)
+ * 2. Fetch words.json to pick the exact word for today (automatically updates every day!)
+ * 3. Fallback to today.json
+ * 4. Fallback to local cache
+ * 5. Fallback to built-in default
  */
 async function getWordData() {
   const fm = FileManager.local();
   const cachePath = fm.joinPath(fm.documentsDirectory(), CONFIG.CACHE_KEY + ".json");
 
-  // 1. Try fetching today.json
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(diff / oneDay);
+
+  // 1. Fetch full words list and select based on day of year
   try {
-    const req = new Request(CONFIG.TODAY_URL);
+    const req = new Request(CONFIG.ALL_WORDS_URL);
     req.timeoutInterval = 6;
-    const data = await req.loadJSON();
+    const words = await req.loadJSON();
+    if (Array.isArray(words) && words.length > 0) {
+      const selected = words[(dayOfYear - 1) % words.length];
+      fm.writeString(cachePath, JSON.stringify(selected));
+      return selected;
+    }
+  } catch (e) {
+    console.log("Could not load words.json: " + e);
+  }
+
+  // 2. Try today.json
+  try {
+    const reqToday = new Request(CONFIG.TODAY_URL);
+    reqToday.timeoutInterval = 6;
+    const data = await reqToday.loadJSON();
     if (data && data.hanzi) {
       fm.writeString(cachePath, JSON.stringify(data));
       return data;
     }
   } catch (e) {
-    console.log("Could not fetch today.json directly: " + e);
+    console.log("Could not load today.json: " + e);
   }
 
-  // 2. Try local cache
+  // 3. Try local cache
   if (fm.fileExists(cachePath)) {
     try {
       const cached = JSON.parse(fm.readString(cachePath));
@@ -79,7 +100,7 @@ async function getWordData() {
     }
   }
 
-  // 3. Fallback
+  // 4. Default fallback
   return OFFLINE_FALLBACK;
 }
 
@@ -96,7 +117,7 @@ async function createWidget(data) {
   gradient.colors = [new Color(CONFIG.BG_START), new Color(CONFIG.BG_END)];
   widget.backgroundGradient = gradient;
 
-  // Tap action: Open Pleco or Google Translate
+  // Tap action: Open translation / dictionary
   const query = encodeURIComponent(data.hanzi);
   widget.url = `https://translate.google.com/?sl=zh-CN&tl=en&text=${query}&op=translate`;
 
