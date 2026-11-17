@@ -108,7 +108,7 @@ function buildLockScreenRectangular(widget, data) {
 
   // --- LEFT: Large Hanzi ---
   const leftStack = row.addStack();
-  leftStack.layoutVertical();
+  leftStack.layoutVertically();
   leftStack.centerAlignContent();
 
   const hanziText = leftStack.addText(data.hanzi);
@@ -120,7 +120,7 @@ function buildLockScreenRectangular(widget, data) {
 
   // --- RIGHT: Pinyin + English + HSK ---
   const rightStack = row.addStack();
-  rightStack.layoutVertical();
+  rightStack.layoutVertically();
 
   // Pinyin
   const pinyinText = rightStack.addText(data.pinyin);
@@ -151,7 +151,7 @@ function buildLockScreenCircular(widget, data) {
   widget.setPadding(0, 0, 0, 0);
 
   const col = widget.addStack();
-  col.layoutVertical();
+  col.layoutVertically();
   col.centerAlignContent();
 
   const hanziText = col.addText(data.hanzi);
