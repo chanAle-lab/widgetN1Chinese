@@ -3,14 +3,32 @@
 > A minimalist daily Chinese vocabulary widget for your **iPhone** and **Android** home screens. 
 > Features Hanzi, Pinyin with tone marks, English definition, and real-world example sentences.
 
+[![Build Android APK](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/build-apk.yml/badge.svg)](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/build-apk.yml)
 [![Daily Word Updater](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/daily-update.yml/badge.svg)](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/daily-update.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## 🌐 Live Web Preview
-Experience the interactive widget, pronunciation audio, and setup assistant:  
-👉 **[https://chanale-lab.github.io/widgetN1Chinese/](https://chanale-lab.github.io/widgetN1Chinese/)**
+## 📲 Direct Downloads & Live Preview
+
+* 🤖 **[Download Android APK (Direct)](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/build-apk.yml)** — Download the latest installable `.apk` from the latest Actions build!
+* 📱 **[iOS Scriptable Code](./widget.js)** — 1-click script for iPhone/iPad users.
+* 🌐 **[Live Web Companion & Audio](https://chanale-lab.github.io/widgetN1Chinese/)** — Interactive pronunciation & widget simulator.
+
+---
+
+## 🤖 Android Installation (.APK)
+
+1. Go to the **[Build Android APK Actions](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/build-apk.yml)** page.
+2. Click on the latest green run with a checkmark (e.g. Run #7).
+3. Scroll down to **Artifacts** and click **ChineseWordOfTheDay-APK** to download the zip file.
+4. Unzip and tap the `.apk` on your Android phone to install.
+5. On your Android home screen:
+   * Long-press an empty space &rarr; Tap **Widgets**.
+   * Find **每日一词 (Chinese WOTD)** and drag it onto your home screen!
+   * *Tip: Open the app to preview the word and listen to pronunciation with the `🔊 Pronounce` button.*
+
+*(Alternative for KWGT users: You can also use **[`kwgt-guide.md`](./kwgt-guide.md)**).*
 
 ---
 
@@ -32,16 +50,6 @@ Takes less than 2 minutes using the free **Scriptable** app:
      * **When Interacting**: Run Script (or Open URL).
 
 > **💡 Offline Support:** The widget automatically caches the word locally so you will still see it even without internet. Tapping the widget opens detailed translations!
-
----
-
-## 🤖 Android Installation (KWGT)
-
-For Android devices, you can use **KWGT (Kustom Widget Maker)**:
-
-1. Install **[KWGT Kustom Widget Maker](https://play.google.com/store/apps/details?id=org.kustom.widget)** from Google Play.
-2. Long-press your home screen and add a **2x2** or **4x2** KWGT widget.
-3. Follow the full step-by-step formula guide in **[`kwgt-guide.md`](./kwgt-guide.md)** to connect to the live JSON feed.
 
 ---
 
@@ -73,13 +81,6 @@ GET https://raw.githubusercontent.com/chanAle-lab/widgetN1Chinese/main/today.jso
 ```http
 GET https://raw.githubusercontent.com/chanAle-lab/widgetN1Chinese/main/words.json
 ```
-
----
-
-## ⚙️ How It Works
-
-1. **Automated Rotation**: A GitHub Actions workflow runs every day at 00:05 UTC ([`daily-update.yml`](./.github/workflows/daily-update.yml)), selecting a word from `words.json` and refreshing `today.json`.
-2. **Client Refresh**: Both the iOS Scriptable widget and Android KWGT fetch the raw GitHub JSON URL and schedule automatic daily refreshes.
 
 ---
 
