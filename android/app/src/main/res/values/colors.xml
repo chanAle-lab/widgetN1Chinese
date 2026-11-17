@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="crimson_dark">#7A1C1C</color>
+    <color name="charcoal_bg">#141416</color>
+    <color name="accent_gold">#E5C07B</color>
+    <color name="text_white">#FDFDFD</color>
+    <color name="text_muted">#CCCCCC</color>
+    <color name="badge_bg">#44000000</color>
+    <color name="card_border">#33FFFFFF</color>
+</resources>
