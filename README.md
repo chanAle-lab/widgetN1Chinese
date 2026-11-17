@@ -41,13 +41,18 @@ Takes less than 2 minutes using the free **Scriptable** app:
 3. Name it **Chinese Word of the Day**.
 4. Copy the full content of [`widget.js`](./widget.js) and paste it into the editor.
 5. Tap **Done** in the top left.
-6. Go to your iPhone home screen:
-   * Long-press an empty space until the apps jiggle.
-   * Tap the **`+`** icon in the top left corner.
-   * Search for **Scriptable** and choose a **Medium** or **Small** widget.
-   * Tap the widget to edit settings:
-     * **Script**: Select `Chinese Word of the Day`.
-     * **When Interacting**: Run Script (or Open URL).
+
+### Adding to Home Screen
+* Long-press your home screen &rarr; Tap **`+`** in the top left.
+* Select **Scriptable** &rarr; Choose **Small**, **Medium**, or **Large**.
+* Tap the widget to edit: Set **Script** to `Chinese Word of the Day`.
+
+### Adding to Lock Screen (iOS 16+)
+* Long-press your Lock Screen &rarr; Tap **Customize** &rarr; Select **Lock Screen**.
+* Tap the widget area under the clock.
+* Select **Scriptable** &rarr; Choose the **Rectangular** widget (or Circular/Inline).
+* Tap the widget to edit: Set **Script** to `Chinese Word of the Day`.
+* *The script automatically formats with an optimized side-by-side layout: bold Hanzi on the left, Pinyin + English definition on the right!*
 
 > **💡 Offline Support:** The widget automatically caches the word locally so you will still see it even without internet. Tapping the widget opens detailed translations!
 
