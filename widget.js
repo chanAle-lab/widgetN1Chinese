@@ -7,19 +7,18 @@
  * Repository: https://github.com/chanAle-lab/widgetN1Chinese
  * 
  * Features:
- * - Displays daily Hanzi, Pinyin with tone marks, English definition, and example sentence.
- * - Supports Small, Medium, and Large iOS home screen widgets.
- * - Automatic dynamic daily rotation (synchronizes automatically by day of year).
- * - Offline cache support: Works even without internet.
- * - Tap to inspect: Tapping the widget opens detailed translation/dictionary.
+ * - Beautiful Lock Screen widget support (accessoryRectangular, accessoryCircular, accessoryInline).
+ * - Full Home Screen support (Small, Medium, Large).
+ * - Dynamic daily rotation by day of year.
+ * - Offline cache support: Works with or without network.
+ * - Tap to inspect: Opens dictionary/translation.
  */
 
 const CONFIG = {
-  // Remote URLs
   ALL_WORDS_URL: "https://raw.githubusercontent.com/chanAle-lab/widgetN1Chinese/main/words.json",
   TODAY_URL: "https://raw.githubusercontent.com/chanAle-lab/widgetN1Chinese/main/today.json",
   
-  // Theme colors
+  // Home Screen Theme Colors
   BG_START: "#7A1C1C",     // Deep Imperial Crimson
   BG_END: "#141416",       // Deep Slate/Charcoal
   ACCENT_GOLD: "#E5C07B",  // Classical Gold
@@ -27,29 +26,23 @@ const CONFIG = {
   TEXT_MUTED: "#CCCCCC",   // Soft Grey
   TEXT_DIM: "#8E8E93",     // Subtle Grey
   
-  // Cache key
   CACHE_KEY: "chinese_wotd_cache"
 };
 
-// Built-in offline fallback in case of no network on first launch
+// Built-in fallback
 const OFFLINE_FALLBACK = {
   date: new Date().toISOString().slice(0, 10),
-  hanzi: "坚持",
-  pinyin: "jiān chí",
-  english: "to persist; to persevere; to keep up",
-  hsk_level: "HSK 4",
-  example_cn: "只要坚持下去，就一定会成功。",
-  example_pinyin: "Zhǐyào jiānchí xiàqù, jiù yídìng huì chénggōng.",
-  example_en: "As long as you persist, you will definitely succeed."
+  hanzi: "沉淀",
+  pinyin: "chén diàn",
+  english: "to settle; accumulate deep experience",
+  hsk_level: "HSK 6",
+  example_cn: "时间能沉淀最真实的感情。",
+  example_pinyin: "Shíjiān néng chéndiàn zuì zhēnshí de gǎnqíng.",
+  example_en: "Time settles and reveals the most genuine emotions."
 };
 
 /**
- * Fetch word data:
- * 1. Calculate day of year (1..365)
- * 2. Fetch words.json to pick the exact word for today (automatically updates every day!)
- * 3. Fallback to today.json
- * 4. Fallback to local cache
- * 5. Fallback to built-in default
+ * Fetch word data with multi-layer fallback
  */
 async function getWordData() {
   const fm = FileManager.local();
@@ -61,7 +54,7 @@ async function getWordData() {
   const oneDay = 1000 * 60 * 60 * 24;
   const dayOfYear = Math.floor(diff / oneDay);
 
-  // 1. Fetch full words list and select based on day of year
+  // 1. Fetch full words list
   try {
     const req = new Request(CONFIG.ALL_WORDS_URL);
     req.timeoutInterval = 6;
@@ -100,26 +93,95 @@ async function getWordData() {
     }
   }
 
-  // 4. Default fallback
   return OFFLINE_FALLBACK;
 }
 
 /**
- * Build the widget UI
+ * Lock Screen Rectangular Widget Layout (Side-by-side, perfectly fits iOS lock screen)
  */
-async function createWidget(data) {
-  const widget = new ListWidget();
-  const family = config.widgetFamily || "medium";
+function buildLockScreenRectangular(widget, data) {
+  widget.setPadding(0, 0, 0, 0);
 
+  const row = widget.addStack();
+  row.layoutHorizontally();
+  row.centerAlignContent();
+
+  // --- LEFT: Large Hanzi ---
+  const leftStack = row.addStack();
+  leftStack.layoutVertical();
+  leftStack.centerAlignContent();
+
+  const hanziText = leftStack.addText(data.hanzi);
+  hanziText.font = Font.boldSystemFont(data.hanzi.length > 2 ? 21 : 25);
+  hanziText.textColor = Color.white();
+  hanziText.lineLimit = 1;
+
+  row.addSpacer(8);
+
+  // --- RIGHT: Pinyin + English + HSK ---
+  const rightStack = row.addStack();
+  rightStack.layoutVertical();
+
+  // Pinyin
+  const pinyinText = rightStack.addText(data.pinyin);
+  pinyinText.font = Font.semiboldSystemFont(12);
+  pinyinText.textColor = Color.white();
+  pinyinText.lineLimit = 1;
+
+  rightStack.addSpacer(2);
+
+  // English Definition
+  const englishText = rightStack.addText(data.english);
+  englishText.font = Font.systemFont(10);
+  englishText.textColor = new Color("#FFFFFF", 0.88);
+  englishText.lineLimit = 2;
+
+  if (data.hsk_level) {
+    rightStack.addSpacer(2);
+    const hskText = rightStack.addText(data.hsk_level);
+    hskText.font = Font.systemFont(8);
+    hskText.textColor = new Color("#FFFFFF", 0.6);
+  }
+}
+
+/**
+ * Lock Screen Circular Widget Layout
+ */
+function buildLockScreenCircular(widget, data) {
+  widget.setPadding(0, 0, 0, 0);
+
+  const col = widget.addStack();
+  col.layoutVertical();
+  col.centerAlignContent();
+
+  const hanziText = col.addText(data.hanzi);
+  hanziText.font = Font.boldSystemFont(18);
+  hanziText.textColor = Color.white();
+
+  const pinyinText = col.addText(data.pinyin);
+  pinyinText.font = Font.systemFont(9);
+  pinyinText.textColor = new Color("#FFFFFF", 0.8);
+}
+
+/**
+ * Lock Screen Inline Text Layout (Above Clock)
+ */
+function buildLockScreenInline(widget, data) {
+  const line = widget.addText(`${data.hanzi} (${data.pinyin}) · ${data.english}`);
+  line.font = Font.systemFont(12);
+  line.textColor = Color.white();
+}
+
+/**
+ * Home Screen Widget Layout (Small, Medium, Large)
+ */
+function buildHomeScreenWidget(widget, data, family) {
   // Gradient background
   const gradient = new LinearGradient();
   gradient.locations = [0.0, 1.0];
   gradient.colors = [new Color(CONFIG.BG_START), new Color(CONFIG.BG_END)];
   widget.backgroundGradient = gradient;
-
-  // Tap action: Open translation / dictionary
-  const query = encodeURIComponent(data.hanzi);
-  widget.url = `https://translate.google.com/?sl=zh-CN&tl=en&text=${query}&op=translate`;
+  widget.setPadding(16, 16, 16, 16);
 
   // --- HEADER ROW ---
   const header = widget.addStack();
@@ -163,7 +225,7 @@ async function createWidget(data) {
   englishText.textColor = new Color(CONFIG.TEXT_MUTED);
   englishText.lineLimit = family === "small" ? 2 : 3;
 
-  // --- EXAMPLE SENTENCES (Medium & Large widgets) ---
+  // --- EXAMPLE SENTENCES (Medium & Large) ---
   if (family !== "small" && data.example_cn) {
     widget.addSpacer(8);
 
@@ -194,8 +256,31 @@ async function createWidget(data) {
   }
 
   widget.addSpacer();
+}
 
-  // Schedule next refresh at next midnight
+/**
+ * Main widget builder
+ */
+async function createWidget(data) {
+  const widget = new ListWidget();
+  const family = config.widgetFamily || "medium";
+
+  // Tap to translate
+  const query = encodeURIComponent(data.hanzi);
+  widget.url = `https://translate.google.com/?sl=zh-CN&tl=en&text=${query}&op=translate`;
+
+  // Detect widget placement
+  if (family === "accessoryRectangular") {
+    buildLockScreenRectangular(widget, data);
+  } else if (family === "accessoryCircular") {
+    buildLockScreenCircular(widget, data);
+  } else if (family === "accessoryInline") {
+    buildLockScreenInline(widget, data);
+  } else {
+    buildHomeScreenWidget(widget, data, family);
+  }
+
+  // Next refresh at midnight
   const nextRefresh = new Date();
   nextRefresh.setDate(nextRefresh.getDate() + 1);
   nextRefresh.setHours(0, 2, 0, 0);
@@ -211,7 +296,8 @@ const widget = await createWidget(data);
 if (config.runsInWidget) {
   Script.setWidget(widget);
 } else {
-  // When run inside the Scriptable editor app, show interactive preview
-  await widget.presentMedium();
+  // In Scriptable preview mode:
+  // Toggle between previewing as Lock Screen or Home Screen:
+  await widget.presentAccessoryRectangular();
 }
 Script.complete();
