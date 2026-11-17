@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Chinese Word of the Day</string>
+    <string name="widget_name">每日一词 (Chinese WOTD)</string>
+    <string name="widget_description">Daily Chinese vocabulary with Pinyin, English translation, and example sentences.</string>
+</resources>
