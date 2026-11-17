@@ -73,13 +73,15 @@
         android:textColor="@color/text_muted"
         android:textSize="12sp" />
 
-    <!-- Example Sentence -->
-    <View
+    <!-- Example Sentence Divider (Must use ImageView in RemoteViews, not View) -->
+    <ImageView
+        android:id="@+id/iv_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="#22FFFFFF" />
+        android:background="#22FFFFFF"
+        android:contentDescription="@null" />
 
     <TextView
         android:id="@+id/tv_example_cn"
