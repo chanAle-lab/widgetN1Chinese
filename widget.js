@@ -265,9 +265,9 @@ async function createWidget(data) {
   const widget = new ListWidget();
   const family = config.widgetFamily || "medium";
 
-  // Tap to translate
+  // Tap to open on N1Mandarin
   const query = encodeURIComponent(data.hanzi);
-  widget.url = `https://translate.google.com/?sl=zh-CN&tl=en&text=${query}&op=translate`;
+  widget.url = `https://chanale-lab.github.io/N1Mandarin/#/words?q=${query}`;
 
   // Detect widget placement
   if (family === "accessoryRectangular") {
