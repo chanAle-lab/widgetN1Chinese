@@ -27,6 +27,12 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             tts?.speak(currentHanzi, TextToSpeech.QUEUE_FLUSH, null, "HanziAudio")
         }
 
+        val btnPortal = findViewById<Button>(R.id.btn_open_portal)
+        btnPortal.setOnClickListener {
+            val uri = android.net.Uri.parse("https://chanale-lab.github.io/N1Mandarin/")
+            startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, uri))
+        }
+
         loadTodayData()
     }
 
