@@ -1,7 +1,8 @@
 # 每日一词 · Chinese Word of the Day Widget
 
-> A minimalist daily Chinese vocabulary widget for your **iPhone** and **Android** home screens. 
-> Features Hanzi, Pinyin with tone marks, English definition, and real-world example sentences.
+> Official daily Chinese vocabulary widget for **[N1Mandarin](https://chanale-lab.github.io/N1Mandarin/)**. 
+> Works seamlessly on **iPhone** (iOS Lock Screen & Home Screen) and **Android** (Native AppWidget). 
+> Syncs with the complete 1,000-word HSK 1, 2, and 3 curriculum with Hanzi, Pinyin, English, and instant practice.
 
 [![Build Android APK](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/build-apk.yml/badge.svg)](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/build-apk.yml)
 [![Daily Word Updater](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/daily-update.yml/badge.svg)](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/daily-update.yml)
@@ -9,11 +10,12 @@
 
 ---
 
-## 📲 Direct Downloads & Live Preview
+## 📲 Direct Downloads & Links
 
-* 🤖 **[Download Android APK (Direct)](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/build-apk.yml)** — Download the latest installable `.apk` from the latest Actions build!
+* 🎓 **[N1Mandarin Web Portal](https://chanale-lab.github.io/N1Mandarin/)** — Full learning platform with papers, flashcards, word lists, and writing tools.
+* 🤖 **[Download Android APK (Direct)](https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/build-apk.yml)** — Download the latest installable `.apk` from GitHub Actions.
 * 📱 **[iOS Scriptable Code](./widget.js)** — 1-click script for iPhone/iPad users.
-* 🌐 **[Live Web Companion & Audio](https://chanale-lab.github.io/widgetN1Chinese/)** — Interactive pronunciation & widget simulator.
+* 🌐 **[Live Widget Companion & Audio](https://chanale-lab.github.io/widgetN1Chinese/)** — Interactive pronunciation & widget simulator.
 
 ---
 
