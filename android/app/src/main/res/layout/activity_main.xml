@@ -38,15 +38,35 @@
             <include layout="@layout/widget_chinese" />
         </FrameLayout>
 
-        <Button
-            android:id="@+id/btn_speak"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:backgroundTint="#E5C07B"
-            android:text="🔊 Pronounce (发音)"
-            android:textColor="#141416"
-            android:textStyle="bold" />
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_speak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#E5C07B"
+                android:text="🔊 Pronounce"
+                android:textColor="#141416"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_open_portal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#333742"
+                android:text="🌐 N1Mandarin"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <!-- Instructions Card -->
         <LinearLayout
