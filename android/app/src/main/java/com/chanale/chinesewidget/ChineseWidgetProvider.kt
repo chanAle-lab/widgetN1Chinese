@@ -99,10 +99,21 @@ class ChineseWidgetProvider : AppWidgetProvider() {
             views.setTextViewText(R.id.tv_pinyin, pinyin)
             views.setTextViewText(R.id.tv_english, english)
             views.setTextViewText(R.id.tv_hsk, hsk)
-            views.setTextViewText(R.id.tv_example_cn, exampleCn)
-            views.setTextViewText(R.id.tv_example_en, exampleEn)
 
-            val uri = Uri.parse("https://translate.google.com/?sl=zh-CN&tl=en&text=$hanzi&op=translate")
+            if (exampleCn.isNotEmpty()) {
+                views.setViewVisibility(R.id.iv_divider, android.view.View.VISIBLE)
+                views.setViewVisibility(R.id.tv_example_cn, android.view.View.VISIBLE)
+                views.setViewVisibility(R.id.tv_example_en, android.view.View.VISIBLE)
+                views.setTextViewText(R.id.tv_example_cn, exampleCn)
+                views.setTextViewText(R.id.tv_example_en, exampleEn)
+            } else {
+                views.setViewVisibility(R.id.iv_divider, android.view.View.GONE)
+                views.setViewVisibility(R.id.tv_example_cn, android.view.View.GONE)
+                views.setViewVisibility(R.id.tv_example_en, android.view.View.GONE)
+            }
+
+            val encodedWord = java.net.URLEncoder.encode(hanzi, "UTF-8")
+            val uri = Uri.parse("https://chanale-lab.github.io/N1Mandarin/#/words?q=$encodedWord")
             val intent = Intent(Intent.ACTION_VIEW, uri).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
