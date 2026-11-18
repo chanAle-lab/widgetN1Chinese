@@ -42,7 +42,28 @@
     header {
       text-align: center;
       max-width: 600px;
-      margin-bottom: 36px;
+      margin-bottom: 24px;
+    }
+
+    .n1-badge-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(229, 192, 123, 0.12);
+      border: 1px solid rgba(229, 192, 123, 0.35);
+      color: var(--accent-gold);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .n1-badge-link:hover {
+      background: rgba(229, 192, 123, 0.22);
+      transform: translateY(-1px);
     }
 
     header h1 {
@@ -285,8 +306,11 @@
 <body>
 
   <header>
+    <a href="https://chanale-lab.github.io/N1Mandarin/" target="_blank" class="n1-badge-link">
+      🎓 Official Companion for <strong>N1Mandarin</strong> &rarr;
+    </a>
     <h1>每日一词</h1>
-    <p>Chinese Word of the Day widget for iPhone & Android</p>
+    <p>Chinese Word of the Day widget for iPhone & Android · Powered by N1Mandarin</p>
   </header>
 
   <!-- Live Mockup of the Widget -->
@@ -337,12 +361,12 @@
     <!-- Android Tab -->
     <div id="tab-android" class="tab-content">
       <ol class="step-list">
-        <li>Install the free <strong>KWGT Kustom Widget Maker</strong> from Google Play.</li>
-        <li>Add a blank KWGT widget (2x2 or 4x2) to your home screen.</li>
-        <li>Follow the formula strings in our step-by-step setup guide to connect to the daily JSON feed.</li>
+        <li><strong>Native Android App (Recommended):</strong> Download and install the pre-built <code>.apk</code> to get the native home screen widget.</li>
+        <li><strong>KWGT (Alternative):</strong> Or build a customized widget layout using the KWGT app and our step-by-step formula guide.</li>
       </ol>
       <div class="code-action">
-        <a class="btn-primary" href="kwgt-guide.md" target="_blank">📖 Open KWGT Setup Guide</a>
+        <a class="btn-primary" href="https://github.com/chanAle-lab/widgetN1Chinese/actions/workflows/build-apk.yml" target="_blank">🤖 Download Android APK</a>
+        <a class="btn-secondary" href="kwgt-guide.md" target="_blank">📖 KWGT Setup Guide</a>
       </div>
     </div>
 
@@ -360,7 +384,7 @@
   </div>
 
   <footer>
-    <p>Powered by <a href="https://github.com/chanAle-lab/widgetN1Chinese">chanAle-lab/widgetN1Chinese</a></p>
+    <p>Official Companion for <a href="https://chanale-lab.github.io/N1Mandarin/" target="_blank">N1Mandarin</a> · GitHub: <a href="https://github.com/chanAle-lab/widgetN1Chinese" target="_blank">widgetN1Chinese</a></p>
   </footer>
 
   <script>
